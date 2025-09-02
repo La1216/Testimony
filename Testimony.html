@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multi-line Spoiler Typing</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .spoiler {
+      background: #222;
+      padding: 15px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      color: #bbb;
+      max-width: 600px; /* keeps text readable */
+      width: 100%;
+      text-align: left;
+    }
+
+    .spoiler-text {
+      display: none;
+      margin-top: 10px;
+      font-size: 1rem;
+      line-height: 1.5;
+      word-wrap: break-word;
+      white-space: normal; /* allows multiple lines */
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 2px;
+      background: #fff;
+      margin-left: 2px;
+      animation: blink 0.7s infinite;
+      vertical-align: bottom;
+    }
+
+    @keyframes blink {
+      0% { opacity: 1; }
+      50% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="spoiler" onclick="revealSpoiler(this)">
+  TESTIMONY
+  <div class="spoiler-text"></div>
+</div>
+
+<script>
+  function revealSpoiler(el) {
+    const textEl = el.querySelector(".spoiler-text");
+    if (textEl.style.display === "block") return; // prevents retyping
+
+    const hiddenText = `Testimony,mhm mhm mhm,It was really something seeing you again after all these years,I didn’t realize how much I’d missed you until you disappeared again for that whole week . Honestly, it felt strange not having you around, like time was dragging.
+
+So when you came back, I was looking forward to us actually talking, really catching up,🥺but it didn’t turn out that way. Yesterday while we were chatting, I said I’ll go quiet until next month before I reach out again. And yeah, one month is going to feel like a whole year, but I guess my ego will make me stick to it,I will miss you tho,😭😭😭😭😭😭😭.
+
+Until then, 💃 Tadaaaa, mtcheew, Rubbish 🥵 💔 ♥ .`;
+
+    textEl.style.display = "block";
+
+    let i = 0;
+    function typeWriter() {
+      if (i < hiddenText.length) {
+        textEl.innerHTML = hiddenText.substring(0, i + 1) + '<span class="cursor"></span>';
+        i++;
+        setTimeout(typeWriter, 40); // speed (ms per character)
+      } else {
+        textEl.innerHTML = hiddenText; // remove cursor after typing
+      }
+    }
+    typeWriter();
+  }
+</script>
+
+</body>
+</html>
