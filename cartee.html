@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>De LUWA - Ultimate Global Restaurant</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.0/lottie.min.js"></script>
+<script src="https://js.paystack.co/v1/inline.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
+body{background:#0a0a0a;color:#fff;overflow-x:hidden;scroll-behavior:smooth;}
+a{text-decoration:none;color:inherit;}
+
+/* NAVBAR */
+nav{display:flex;justify-content:space-between;align-items:center;padding:20px 60px;position:fixed;width:100%;top:0;z-index:100;background:rgba(0,0,0,0.6);backdrop-filter:blur(10px);}
+nav h1{font-weight:900;font-size:28px;background:linear-gradient(90deg,#ff416c,#ff4b2b);background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent;animation:glitch 2s infinite;}
+nav ul{display:flex;gap:30px; list-style-type:none;}
+nav ul li a{color:#ccc;font-weight:600;transition:0.3s;}
+nav ul li a:hover{color:#fff;}
+nav ul li a.active{color:#ff416c;}
+
+/* CURSOR TRAIL */
+.cursor{position:fixed;left:0;top:0;width:30px;height:30px;border-radius:50%;pointer-events:none;mix-blend-mode:screen;transform:translate(-50%,-50%);z-index:9999;background:radial-gradient(circle,#ff416c,#ff4b2b);box-shadow:0 0 25px #ff416c,0 0 35px #ff4b2b;}
+
+/* HERO */
+.hero{min-height:120vh;display:flex;align-items:center;justify-content:flex-start;padding:0 8%;background:url('https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=1470&q=80') no-repeat center/cover;position:relative;overflow:hidden;}
+.hero::after{content:'';position:absolute;inset:0;background:rgba(10,10,10,0.6);}
+.hero-content{position:relative;max-width:700px;}
+.hero h1{font-size:64px;font-weight:900;margin-bottom:20px;background:linear-gradient(90deg,#ff416c,#ff4b2b);background-clip:text;-webkit-background-clip:text;color:transparent;animation:glitch 1.8s infinite;}
+.hero p{font-size:20px;color:#ddd;margin-bottom:30px;line-height:1.5;}
+.btn{padding:16px 36px;background:linear-gradient(45deg,#ff416c,#ff4b2b);border-radius:14px;font-weight:700;color:#071625;transition:0.3s;text-transform:uppercase;letter-spacing:1px;}
+.btn:hover{transform:scale(1.05);box-shadow:0 0 20px #ff416c,0 0 30px #ff4b2b;}
+
+/* SECTIONS */
+section{padding:120px 8%;}
+h2{font-size:46px;font-weight:900;margin-bottom:50px;background:linear-gradient(90deg,#ff416c,#ff4b2b);background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent;animation:glitch 2s infinite;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:40px;}
+.card{background:#111;padding:25px;border-radius:20px;border:1px solid #222;transition:0.5s;cursor:pointer;transform:translateY(20px);opacity:0;}
+.card:hover{transform:scale(1.07);box-shadow:0 25px 60px rgba(255,65,108,0.5),0 0 35px rgba(255,75,43,0.5);}
+.card img{width:100%;border-radius:18px;margin-bottom:20px;}
+.card h4{margin-bottom:12px;font-size:24px;color:#fff;}
+.card p{color:#bbb;font-size:16px;padding-bottom: 12px;}
+.card button{padding:12px 24px ;background:linear-gradient(45deg,#ff416c,#ff4b2b);border:none;border-radius:12px;color:#071625;font-weight:700;cursor:pointer;transition:0.3s;text-transform:uppercase;}
+.card button:hover{transform:scale(1.05);box-shadow:0 0 20px #ff416c,0 0 30px #ff4b2b;}
+
+/* RESERVATION & ORDER FORM */
+.reservation{background:#111;padding:50px;border-radius:24px;max-width:750px;margin:auto;opacity:0;transform:translateY(20px);}
+.reservation input, .reservation select, .reservation textarea{width:100%;padding:16px;margin-bottom:16px;border-radius:14px;border:1px solid #222;background:transparent;color:#fff;transition:0.3s;}
+.reservation input:focus, .reservation select:focus, .reservation textarea:focus{border-color:#ff416c;box-shadow:0 0 14px #ff416c;}
+.reservation button{width:100%;padding:18px;font-weight:700;border-radius:16px;background:linear-gradient(45deg,#ff416c,#ff4b2b);border:none;color:#071625;cursor:pointer;transition:0.3s;text-transform:uppercase;letter-spacing:1px;}
+.reservation button:hover{transform:scale(1.04);box-shadow:0 0 25px #ff416c,0 0 35px #ff4b2b;}
+
+/*Contact*/
+#contact {padding: 12px 2px 2px 80px;}
+#contact p{padding-bottom: 12px;}
+
+/* FOOTER */
+footer{text-align:center;padding:50px;color:#777;border-top:1px solid #222;opacity:0;transform:translateY(20px);}
+
+/* ANIMATIONS */
+@keyframes glitch{
+0%{text-shadow:2px 0 #ff416c,-2px 2px #ff4b2b;}
+20%{text-shadow:-2px -2px #ff4b2b,2px 2px #ff416c;}
+40%{text-shadow:2px -2px #ff416c,-2px 2px #ff4b2b;}
+60%{text-shadow:-2px 2px #ff4b2b,2px -2px #ff416c;}
+80%{text-shadow:2px 2px #ff416c,-2px -2px #ff4b2b;}
+100%{text-shadow:2px -2px #ff416c,-2px 2px #ff4b2b;}
+}
+@media (max-width:768px){
+    nav{display:flex;justify-content:space-between;align-items:center;padding:20px 60px;position:fixed;width:100%;top:0;z-index:100;background:rgba(0,0,0,0.6);backdrop-filter:blur(10px);}
+nav h1{font-weight:900;font-size:28px;background:linear-gradient(90deg,#ff416c,#ff4b2b);background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent;animation:glitch 2s infinite;}
+nav ul{display:flex;gap:30px;}
+nav ul li a{color:#ccc;font-weight:600;transition:0.3s;}
+nav ul li a:hover{color:#fff;}
+nav ul li a.active{color:#ff416c;}
+
+ .navbars {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 30px 50px;
+        color: white;
+        position: fixed;
+        z-index: 999;
+        height: 100vh;
+        width: 250px;
+        top: 0;
+        height: 0;
+
+    }
+    /* HAMBURGER ICON */
+    .menu-btn {
+        width: 30px;
+        height: 22px;
+        cursor: pointer;
+        position:fixed;
+        display: flex;
+        position: fixed;
+        top: 20px;  /* or desired vertical offset */
+        right: 30px; /* or desired horizontal offset */
+        z-index: 1100; /* above page elements */
+        
+    }
+
+    .menu-btn span {
+        position: absolute;
+        width: 100%;
+        height: 4px;
+        background: white;
+        border-radius: 4px;
+        left: 0;
+        transition: 0.4s;
+        
+    }
+
+    .menu-btn span:nth-child(1) { top: 0; }
+    .menu-btn span:nth-child(2) { top: 9px; }
+    .menu-btn span:nth-child(3) { top: 18px; }
+
+    /* ANIMATION TO CROSS */
+    .menu-btn.active span:nth-child(1) {
+        transform: rotate(45deg);
+        top: 9px;
+    }
+
+    .menu-btnsactive span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .menu-btns.active span:nth-child(3) {
+        transform: rotate(-45deg);
+        top: 9px;
+    }
+
+    /* SIDEBAR */
+    .sidebars {
+        position: fixed;
+        top: 0;
+        left: -260px;
+        width: 250px;
+        height: 100%;
+        background: #222;
+        padding-top: 60px;
+        transition: 0.3s;
+        z-index: 988;
+    }
+
+    .sidebars a {
+        display: block;
+        padding: 15px 25px;
+        color: white;
+        text-decoration: none;
+        font-size: 18px;
+    }
+
+    .sidebars a:hover {
+        background: #444;
+    }
+    #navbar{
+      display:none;
+    }
+    
+}
+</style>
+</head>
+<body>
+
+
+<!-- NAVBAR -->
+<div class="navbars">
+
+    <div class="menu-btn" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</div>
+
+<!-- SIDEBAR -->
+<div id="sidebars" class="sidebars">
+    <a href="#home" class="active">Home</a>
+    <a href="#italian">Italian</a>
+    <a href="#japanese">Japanese</a>
+    <a href="#american">American</a>
+    <a href="#spanish">Spanish</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#reservation">Order & Reserve</a>
+</div>
+
+<script>
+    function toggleMenu() {
+    const menu = document.getElementById("sidebars");
+    const btn = document.getElementById("menu-btn");
+
+    if (menu.style.left === "0px") {
+        menu.style.left = "-260px";
+        btn.classList.remove("active");
+    } else {
+        menu.style.left = "0px";
+        btn.classList.add("active");
+    }
+}
+</script>
+
+<nav id="navbar">
+<h1>De LUWA</h1>
+<ul>
+<li><a href="#home" class="active">Home</a></li>
+<li><a href="#italian">Italian</a></li>
+<li><a href="#japanese">Japanese</a></li>
+<li><a href="#american">American</a></li>
+<li><a href="#spanish">Spanish</a></li>
+<li><a href="#gallery">Gallery</a></li>
+<li><a href="#reservation">Order & Reserve</a></li>
+</ul>
+</nav>
+
+<div class="cursor" id="cursor"></div>
+
+<section id="home" class="hero">
+<div class="hero-content">
+<h1>De Luwa</h1>
+<p></p>
+<a href="#reservation" class="btn">Order & Reserve</a>
+<div id="lottie-hero" style="position:absolute;right:-60px;top:15%;width:350px;height:350px;"></div>
+</div>
+</section>
+
+<!-- ITALIAN SECTION -->
+<section id="italian">
+<h2>Italian Dishes</h2>
+<div class="grid">
+<div class="card">
+<img src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=700&q=80">
+<h4>Truffle Risotto</h4>
+<p>Creamy risotto with fresh truffles and parmesan.</p>
+<button onclick="openOrder('Truffle Risotto',18000)">Order Now</button>
+</div>
+<div class="card">
+<img src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=700&q=80">
+<h4>Margherita Pizza -₦18,000</h4>
+<p>Classic Italian pizza with mozzarella, basil, and tomato sauce.</p>
+<button onclick="openOrder('Margherita Pizza',18000)">Order Now</button>
+</div>
+<div class="card">
+<img src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=700&q=80">
+<h4>Margherita Pizza -₦18,000</h4>
+<p>Classic Italian pizza with mozzarella, basil, and tomato sauce.</p>
+<button onclick="openOrder('Margherita Pizza',18000)">Order Now</button>
+</div>
+<div class="card">
+<img src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=700&q=80">
+<h4>Margherita Pizza -₦18,000</h4>
+<p>Classic Italian pizza with mozzarella, basil, and tomato sauce.</p>
+<button onclick="openOrder('Margherita Pizza',18000)">Order Now</button>
+</div>
+<div class="card">
+<img src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=700&q=80">
+<h4>Margherita Pizza -₦18,000</h4>
+<p>Classic Italian pizza with mozzarella, basil, and tomato sauce.</p>
+<button onclick="openOrder('Margherita Pizza',18000)">Order Now</button>
+</div>
+<div class="card">
+<img src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=700&q=80">
+<h4>Margherita Pizza -₦18,000</h4>
+<p>Classic Italian pizza with mozzarella, basil, and tomato sauce.</p>
+<button onclick="openOrder('Margherita Pizza',18000)">Order Now</button>
+</div>
+</div>
+</section>
+
+<!-- JAPANESE SECTION -->
+<section id="japanese">
+<h2>Japanese Dishes</h2>
+<div class="grid">
+<div class="card">
+<img src="https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?auto=format&fit=crop&w=700&q=80">
+<h4>Sushi Platter-₦18,000</h4>
+<p>Freshly prepared sushi with premium fish selection.</p>
+<button onclick="openOrder('Sushi Platter',18000)">Order Now</button>
+</div>
+<div class="card">
+<img src="https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?auto=format&fit=crop&w=700&q=80">
+<h4>Wagyu Beef-₦18,000</h4>
+<p>Marbled Wagyu steak served with soy glaze.</p>
+<button onclick="openOrder('Wagyu Beef',18000)">Order Now</button>
+</div>
+<div class="card">
+<img src="https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?auto=format&fit=crop&w=700&q=80">
+<h4>Wagyu Beef-₦18,000</h4>
+<p>Marbled Wagyu steak served with soy glaze.</p>
+<button onclick="openOrder('Wagyu Beef',18000)">Order Now</button>
+</div>
+<div class="card">
+<img src="https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?auto=format&fit=crop&w=700&q=80">
+<h4>Wagyu Beef-₦18,000</h4>
+<p>Marbled Wagyu steak served with soy glaze.</p>
+<button onclick="openOrder('Wagyu Beef',18000)">Order Now</button>
+</div>
+<div class="card">
+<img src="https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?auto=format&fit=crop&w=700&q=80">
+<h4>Wagyu Beef-₦18,000</h4>
+<p>Marbled Wagyu steak served with soy glaze.</p>
+<button onclick="openOrder('Wagyu Beef',18000)">Order Now</button>
+</div>
+<div class="card">
+<img src="https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?auto=format&fit=crop&w=700&q=80">
+<h4>Wagyu Beef-₦18,000</h4>
+<p>Marbled Wagyu steak served with soy glaze.</p>
+<button onclick="openOrder('Wagyu Beef',18000)">Order Now</button>
+</div>
+</div>
+</section>
+
+<!-- AMERICAN SECTION -->
+<section id="american">
+<h2>American Dishes</h2>
+<div class="grid">
+<div class="card">
+<img src="https://images.unsplash.com/photo-1551782450-a2132b4ba21d?auto=format&fit=crop&w=700&q=80">
+<h4>Burger Deluxe- ₦18,000</h4>
+<p>Juicy gourmet burger with cheddar, bacon, and signature sauce.</p>
+<button onclick="openOrder('Burger Deluxe',18000)">Order Now</button>
+</div>
+<div class="card">
+<img src="https://images.unsplash.com/photo-1551782450-a2132b4ba21d?auto=format&fit=crop&w=700&q=80">
+<h4>BBQ Ribs- ₦18,000</h4>
+<p>Slow-cooked ribs with smoky barbecue glaze.</p>
+<button onclick="openOrder('BBQ Ribs',18000)">Order Now</button>
+</div>
+<div class="card">
+<img src="https://images.unsplash.com/photo-1551782450-a2132b4ba21d?auto=format&fit=crop&w=700&q=80">
+<h4>BBQ Ribs- ₦18,000</h4>
+<p>Slow-cooked ribs with smoky barbecue glaze.</p>
+<button onclick="openOrder('BBQ Ribs',18000)">Order Now</button>
+</div>
+<div class="card">
+<img src="https://images.unsplash.com/photo-1551782450-a2132b4ba21d?auto=format&fit=crop&w=700&q=80">
+<h4>BBQ Ribs- ₦18,000</h4>
+<p>Slow-cooked ribs with smoky barbecue glaze.</p>
+<button onclick="openOrder('BBQ Ribs',18000)">Order Now</button>
+</div>
+<div class="card">
+<img src="https://images.unsplash.com/photo-1551782450-a2132b4ba21d?auto=format&fit=crop&w=700&q=80">
+<h4>BBQ Ribs- ₦18,000</h4>
+<p>Slow-cooked ribs with smoky barbecue glaze.</p>
+<button onclick="openOrder('BBQ Ribs',18000)">Order Now</button>
+</div>
+<div class="card">
+<img src="https://images.unsplash.com/photo-1551782450-a2132b4ba21d?auto=format&fit=crop&w=700&q=80">
+<h4>BBQ Ribs- ₦18,000</h4>
+<p>Slow-cooked ribs with smoky barbecue glaze.</p>
+<button onclick="openOrder('BBQ Ribs',18000)">Order Now</button>
+</div>
+</div>
+</section>
+
+<!-- SPANISH SECTION -->
+<section id="spanish">
+<h2>Spanish Dishes</h2>
+<div class="grid">
+<div class="card">
+<img src="https://images.unsplash.com/photo-1551782450-a2132b4ba21d?auto=format&fit=crop&w=700&q=80">
+<h4>Paella Valenciana-₦18,000</h4>
+<p>Classic paella with saffron rice, seafood, and chicken.</p>
+<button onclick="openOrder('Paella Valenciana',18000)">Order Now</button>
+</div>
+<div class="card">
+<img src="https://images.unsplash.com/photo-1551782450-a2132b4ba21d?auto=format&fit=crop&w=700&q=80">
+<h4>Tapas Selection-₦18,000</h4>
+<p>Variety of traditional Spanish tapas for sharing.</p>
+<button onclick="openOrder('Tapas Selection',18000)">Order Now</button>
+</div>
+<div class="card">
+<img src="https://images.unsplash.com/photo-1551782450-a2132b4ba21d?auto=format&fit=crop&w=700&q=80">
+<h4>Tapas Selection-₦18,000</h4>
+<p>Variety of traditional Spanish tapas for sharing.</p>
+<button onclick="openOrder('Tapas Selection',18000)">Order Now</button>
+</div>
+<div class="card">
+<img src="https://images.unsplash.com/photo-1551782450-a2132b4ba21d?auto=format&fit=crop&w=700&q=80">
+<h4>Tapas Selection-₦18,000</h4>
+<p>Variety of traditional Spanish tapas for sharing.</p>
+<button onclick="openOrder('Tapas Selection',18000)">Order Now</button>
+</div>
+<div class="card">
+<img src="https://images.unsplash.com/photo-1551782450-a2132b4ba21d?auto=format&fit=crop&w=700&q=80">
+<h4>Tapas Selection-₦18,000</h4>
+<p>Variety of traditional Spanish tapas for sharing.</p>
+<button onclick="openOrder('Tapas Selection',18000)">Order Now</button>
+</div>
+<div class="card">
+<img src="https://images.unsplash.com/photo-1551782450-a2132b4ba21d?auto=format&fit=crop&w=700&q=80">
+<h4>Tapas Selection-₦18,000</h4>
+<p>Variety of traditional Spanish tapas for sharing.</p>
+<button onclick="openOrder('Tapas Selection',18000)">Order Now</button>
+</div>
+</div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+<h2>World Dishes Gallery</h2>
+<div class="grid">
+<div class="card"><img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=700&q=80"></div>
+<div class="card"><img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=700&q=80"></div>
+<div class="card"><img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=700&q=80"></div>
+<div class="card"><img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=700&q=80"></div>
+<div class="card"><img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=700&q=80"></div>
+<div class="card"><img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=700&q=80"></div>
+</div>
+</section>
+
+<!-- RESERVATION & ORDER FORM -->
+<section id="reservation">
+<h2>Order & Reserve</h2>
+<div class="reservation">
+<form id="orderForm" action="https://formsubmit.co/cartioreluxe@gmail.com" method="POST">
+
+<input type="hidden" name="_captcha" value="false">
+<input type="hidden" name="_template" value="table">
+
+<input type="text" name="name" id="name" placeholder="Full Name" required>
+<input type="email" name="email" id="email" placeholder="Email" required>
+<input type="tel" name="phone" id="phone" placeholder="Phone Number" required>
+
+<input type="text" name="dish" id="dish" placeholder="Dish" readonly>
+<input type="text" name="amount" id="amount" placeholder="Price" readonly>
+
+<textarea name="notes" placeholder="Additional Notes"></textarea>
+
+<button type="button" onclick="payWithPaystack()">Pay & Submit Order</button>
+</form>
+</div>
+</section>
+<!-- CONTACT SECTION -->
+<section id="contact">
+<h2>Contact</h2>
+<p>Email: deluwa@gmail.com</p>
+<p>Phone: +234 912 369 9532</p>
+<p>Phone: +234 901 985 2664</p>
+<p>Address: 12 Luxury St, Lagos, Nigeria</p>
+</section>
+
+<footer>© 2025 De Luwa — All Rights Reserved.</footer>
+
+<script>
+
+// Fill order
+function openOrder(dish, amount){
+document.getElementById("dish").value = dish;
+document.getElementById("amount").value = "₦" + amount.toLocaleString();
+document.getElementById("reservation").scrollIntoView({behavior:'smooth'});
+window.orderAmount = amount;
+}
+
+// Paystack Payment
+function payWithPaystack(){
+let email = document.getElementById("email").value;
+let amount = window.orderAmount * 100;
+
+let handler = PaystackPop.setup({
+key: "pk_test_6fca50e065add0586dccdc7b8a0804bac033d639",
+email: email,
+amount: amount,
+currency: "NGN",
+callback: function(){
+document.getElementById("orderForm").submit();
+},
+onClose: function(){
+alert("Payment cancelled.");
+}
+});
+handler.openIframe();
+}
+
+// Smooth scroll and nav highlight
+const navLinks=document.querySelectorAll('nav ul li a');
+navLinks.forEach(a=>{a.addEventListener('click',e=>{
+e.preventDefault();document.querySelector(a.getAttribute('href')).scrollIntoView({behavior:'smooth'});
+});});
+
+// GSAP animations
+gsap.utils.toArray('.card, .reservation, footer, .hero-content').forEach(el=>{
+gsap.fromTo(el,{y:20,opacity:0},{y:0,opacity:1,duration:1,scrollTrigger:{trigger:el,start:'top 85%'}});
+});
+
+// Cursor trail
+const cursor=document.getElementById('cursor');
+window.addEventListener('mousemove', e=>{
+gsap.to(cursor,{x:e.clientX,y:e.clientY,duration:0.1});
+});
+
+// Lottie hero animation
+lottie.loadAnimation({container:document.getElementById('lottie-hero'),renderer:'svg',loop:true,autoplay:true,path:'https://assets5.lottiefiles.com/packages/lf20_u4yrau.json'});
+
+// Open dish order in form
+//function openOrder(dish){
+//document.getElementById('orderField').value = dish;
+//window.scrollTo({top:document.getElementById('reservation').offsetTop - 50, behavior:'smooth'});
+//}
+</script>
+
+</body>
+</html>
